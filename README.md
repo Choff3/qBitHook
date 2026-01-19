@@ -6,7 +6,7 @@ A REST API service that handles post-download actions for qBittorrent based on t
 
 - **Books Category** (configurable): 
   - Emails ebook files (azw3, epub, mobi) to a configured address
-  - Creates hardlinks for m4b audiobook files to a specified directory
+  - Creates hardlinks for audiobook files (m4b, mp3) to a specified directory
   - Prioritizes azw3 > epub > mobi when multiple formats exist
 
 - **Music Category** (configurable):
@@ -27,10 +27,10 @@ pip install -r requirements.txt
 
 3. Run the service:
 ```bash
-python app.py
+python main.py
 ```
 
-The API will start on `http://0.0.0.0:5000`
+The API will start on `http://0.0.0.0:5338`
 
 ## Configuration
 
@@ -73,7 +73,7 @@ If using Gmail, you'll need to:
 
 3. Add the following command (adjust the URL to your API server):
 ```bash
-curl -X POST http://localhost:5000/webhook \
+curl -X POST http://localhost:5338/webhook \
   -d "name=%N" \
   -d "category=%L" \
   -d "tags=%G" \
@@ -90,7 +90,7 @@ curl -X POST http://localhost:5000/webhook \
 
 Or as a single line:
 ```bash
-curl -X POST http://localhost:5000/webhook -d "name=%N" -d "category=%L" -d "tags=%G" -d "content_path=%F" -d "root_path=%R" -d "save_path=%D" -d "num_files=%C" -d "size=%Z" -d "tracker=%T" -d "infohash_v1=%I" -d "infohash_v2=%J" -d "torrent_id=%K"
+curl -X POST http://localhost:5338/webhook -d "name=%N" -d "category=%L" -d "tags=%G" -d "content_path=%F" -d "root_path=%R" -d "save_path=%D" -d "num_files=%C" -d "size=%Z" -d "tracker=%T" -d "infohash_v1=%I" -d "infohash_v2=%J" -d "torrent_id=%K"
 ```
 
 ## API Endpoints
@@ -130,7 +130,7 @@ Health check endpoint.
 The service logs all actions to stdout with timestamps. Monitor logs to troubleshoot any issues:
 
 ```bash
-python app.py 2>&1 | tee qbittorrent-api.log
+python main.py 2>&1 | tee qbittorrent-api.log
 ```
 
 ## Running as a Service (Linux)
@@ -146,7 +146,7 @@ After=network.target
 Type=simple
 User=your-user
 WorkingDirectory=/path/to/qbittorrent-api
-ExecStart=/usr/bin/python3 /path/to/qbittorrent-api/app.py
+ExecStart=/usr/bin/python3 /path/to/qbittorrent-api/main.py
 Restart=always
 
 [Install]
