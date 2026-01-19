@@ -21,16 +21,25 @@ app = Flask(__name__)
 # Load configuration
 def load_config():
     """Load configuration from config.json"""
-    config_path = Path(__file__).parent / 'config.json'
-    try:
-        with open(config_path, 'r') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        logger.error(f"Config file not found at {config_path}")
-        raise
-    except json.JSONDecodeError as e:
-        logger.error(f"Error parsing config file: {e}")
-        raise
+    # Try multiple config locations
+    config_paths = [
+        Path(__file__).parent / 'config.json',
+        Path('/config/config.json')
+    ]
+    
+    for config_path in config_paths:
+        if config_path.exists():
+            try:
+                with open(config_path, 'r') as f:
+                    logger.info(f"Loading config from: {config_path}")
+                    return json.load(f)
+            except json.JSONDecodeError as e:
+                logger.error(f"Error parsing config file at {config_path}: {e}")
+                raise
+    
+    # No config found
+    logger.error(f"Config file not found. Searched locations: {[str(p) for p in config_paths]}")
+    raise FileNotFoundError("config.json not found in any expected location")
 
 CONFIG = load_config()
 
