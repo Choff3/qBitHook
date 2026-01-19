@@ -151,10 +151,10 @@ def handle_music_category(infohash):
         response = requests.post(webhook_url, data=data, timeout=10)
         response.raise_for_status()
         
-        logger.info(f"Successfully sent webhook to music endpoint: {response.status_code}")
+        logger.info(f"Fertilizer Success: {response.status_code}")
         return True
     except requests.exceptions.RequestException as e:
-        logger.error(f"Failed to send webhook to music endpoint: {e}")
+        logger.error(f"Fertilizer Failed: {e}")
         return False
 
 @app.route('/webhook', methods=['POST'])

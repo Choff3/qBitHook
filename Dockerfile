@@ -8,7 +8,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
-COPY main.py .
+COPY app.py .
 COPY config.json /config/config.json
 
 # Create a non-root user
@@ -19,4 +19,4 @@ USER qbithook
 EXPOSE 5338
 
 # Run the application
-CMD ["python", "main.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5338", "--workers", "4", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-", "app:app"]

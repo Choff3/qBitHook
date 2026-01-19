@@ -27,7 +27,7 @@ pip install -r requirements.txt
 
 3. Run the service:
 ```bash
-python main.py
+python app.py
 ```
 
 The API will start on `http://0.0.0.0:5338`
@@ -130,7 +130,7 @@ Health check endpoint.
 The service logs all actions to stdout with timestamps. Monitor logs to troubleshoot any issues:
 
 ```bash
-python main.py 2>&1 | tee qbittorrent-api.log
+python app.py 2>&1 | tee qbittorrent-api.log
 ```
 
 ## Troubleshooting
