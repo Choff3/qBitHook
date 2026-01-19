@@ -123,8 +123,8 @@ def handle_books_category(content_path):
         recipient = CONFIG['books']['email_recipient']
         return send_email_with_attachment(ebook_file, recipient)
     
-    # Check for m4b audio files
-    if path.is_file() and path.suffix.lower() == '.m4b':
+    # Check for m4b or mp3 audio files
+    if path.is_file() and path.suffix.lower() in ['.m4b', '.mp3']:
         dest_dir = CONFIG['books']['audio_directory']
         return create_hardlink(str(path), dest_dir)
     
@@ -205,4 +205,4 @@ def health():
     return jsonify({'status': 'healthy'}), 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=5338, debug=False)
