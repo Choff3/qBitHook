@@ -133,33 +133,6 @@ The service logs all actions to stdout with timestamps. Monitor logs to troubles
 python main.py 2>&1 | tee qbittorrent-api.log
 ```
 
-## Running as a Service (Linux)
-
-Create a systemd service file at `/etc/systemd/system/qbittorrent-api.service`:
-
-```ini
-[Unit]
-Description=qBittorrent Post-Download API
-After=network.target
-
-[Service]
-Type=simple
-User=your-user
-WorkingDirectory=/path/to/qbittorrent-api
-ExecStart=/usr/bin/python3 /path/to/qbittorrent-api/main.py
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Then:
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable qbittorrent-api
-sudo systemctl start qbittorrent-api
-```
-
 ## Troubleshooting
 
 - **Email not sending**: Check SMTP credentials and ensure less secure app access or app passwords are configured
