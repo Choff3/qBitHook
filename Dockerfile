@@ -15,7 +15,7 @@ RUN useradd -m -u 1000 qbithook && chown -R qbithook:qbithook /app
 USER qbithook
 
 # Expose port
-EXPOSE 5000
+EXPOSE 5338
 
 # Run the application
 CMD ["python", "main.py"]
