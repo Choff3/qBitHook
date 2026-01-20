@@ -77,6 +77,25 @@ def send_email_with_attachment(filepath, recipient):
         logger.error(f"Failed to send email: {e}")
         return False
 
+def find_audiobook_file(content_path):
+    """Find audiobook files (m4b or mp3)"""
+    path = Path(content_path)
+    audiobook_files = []
+    
+    # If it's a file, return it if it's a supported format
+    if path.is_file():
+        if path.suffix.lower() in ['.m4b', '.mp3']:
+            return [str(path)]
+        return []
+    
+    # If it's a directory, search for all audiobook files
+    if path.is_dir():
+        for ext in ['.m4b', '.mp3']:
+            for file in path.rglob(f'*{ext}'):
+                audiobook_files.append(str(file))
+    
+    return audiobook_files
+
 def find_ebook_file(content_path):
     """Find the best ebook file (priority: azw3, epub, mobi)"""
     path = Path(content_path)
@@ -132,10 +151,21 @@ def handle_books_category(content_path):
         recipient = CONFIG['books']['email_recipient']
         return send_email_with_attachment(ebook_file, recipient)
     
-    # Check for m4b or mp3 audio files
-    if path.is_file() and path.suffix.lower() in ['.m4b', '.mp3']:
+    # Check for audiobook files (m4b or mp3)
+    audiobook_files = find_audiobook_file(content_path)
+    if audiobook_files:
         dest_dir = CONFIG['books']['audio_directory']
-        return create_hardlink(str(path), dest_dir)
+        success_count = 0
+        for audio_file in audiobook_files:
+            if create_hardlink(audio_file, dest_dir):
+                success_count += 1
+        
+        if success_count > 0:
+            logger.info(f"Successfully created {success_count}/{len(audiobook_files)} hardlinks")
+            return True
+        else:
+            logger.error(f"Failed to create any hardlinks for {len(audiobook_files)} files")
+            return False
     
     logger.warning(f"No supported file found in: {content_path}")
     return False
