@@ -4,16 +4,31 @@ A REST API service that handles post-download actions for qBittorrent based on t
 
 ## Features
 
-- **Books Category** (configurable): 
-  - Emails ebook files (azw3, epub, mobi) to a configured address
+- **Books Category**: 
+  - Emails ebook files (azw3, epub, mobi) to your Kindle
   - Creates hardlinks for audiobook files (m4b, mp3) to a specified directory
   - Prioritizes azw3 > epub > mobi when multiple formats exist
 
-- **Music Category** (configurable):
-  - Sends webhook to a configured endpoint with torrent infohash
+- **Music Category**:
+  - Sends webhook to [Fertilizer](https://github.com/moleculekayak/fertilizer) with torrent infohash
 
 ## Installation
 
+### Docker-Compose
+```
+services:
+  qbithook:
+    container_name: qbithook
+    image: ghcr.io/choff3/qbithook:latest
+    restart: unless-stopped
+    volumes:
+      - <qBittorrent save directory>:/torrents
+      - <qBitHook config directory>:/config
+    ports:
+      - 5338:5338
+```
+
+### Python
 1. Install dependencies:
 ```bash
 pip install -r requirements.txt
@@ -73,23 +88,6 @@ If using Gmail, you'll need to:
 
 3. Add the following command (adjust the URL to your API server):
 ```bash
-curl -X POST http://localhost:5338/webhook \
-  -d "name=%N" \
-  -d "category=%L" \
-  -d "tags=%G" \
-  -d "content_path=%F" \
-  -d "root_path=%R" \
-  -d "save_path=%D" \
-  -d "num_files=%C" \
-  -d "size=%Z" \
-  -d "tracker=%T" \
-  -d "infohash_v1=%I" \
-  -d "infohash_v2=%J" \
-  -d "torrent_id=%K"
-```
-
-Or as a single line:
-```bash
 curl -X POST http://localhost:5338/webhook -d "name=%N" -d "category=%L" -d "tags=%G" -d "content_path=%F" -d "root_path=%R" -d "save_path=%D" -d "num_files=%C" -d "size=%Z" -d "tracker=%T" -d "infohash_v1=%I" -d "infohash_v2=%J" -d "torrent_id=%K"
 ```
 
@@ -111,7 +109,7 @@ Handles qBittorrent post-download webhook calls.
   "status": "success|error",
   "message": "Processing details",
   "torrent_name": "Example Torrent",
-  "category": "MaM"
+  "category": "books"
 }
 ```
 
@@ -130,7 +128,7 @@ Health check endpoint.
 The service logs all actions to stdout with timestamps. Monitor logs to troubleshoot any issues:
 
 ```bash
-python app.py 2>&1 | tee qbittorrent-api.log
+python app.py 2>&1 | tee qbithook.log
 ```
 
 ## Troubleshooting
