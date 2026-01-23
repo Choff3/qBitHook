@@ -14,6 +14,6 @@
   },
   "music": {
     "category": "lidarr",
-    "fertilizer_endpoint": "http://fertilizer:9713/api/webhook"
+    "nemorosa_endpoint": "http://nemorosa:8256"
   }
 }

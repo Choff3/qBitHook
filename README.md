@@ -10,7 +10,7 @@ A REST API service that handles post-download actions for qBittorrent based on t
   - Prioritizes azw3 > epub > mobi when multiple formats exist
 
 - **Music Category**:
-  - Sends webhook to [Fertilizer](https://github.com/moleculekayak/fertilizer) with torrent infohash
+  - Sends webhook to [Nemorosa](https://github.com/KyokoMiki/nemorosa) with torrent infohash
 
 ## Installation
 
@@ -68,7 +68,7 @@ Edit `config.json` with your settings:
   },
   "music": {
     "category": "lidarr",
-    "fertilizer_endpoint": "http://fertilizer:9713/api/webhook"
+    "nemorosa_endpoint": "http://nemorosa:9713"
   }
 }
 ```
@@ -135,4 +135,4 @@ python app.py 2>&1 | tee qbithook.log
 
 - **Email not sending**: Check SMTP credentials and ensure less secure app access or app passwords are configured
 - **Hardlink fails**: Ensure source and destination are on the same filesystem
-- **Webhook fails**: Check network connectivity to the fertilizer server and verify the endpoint URL
+- **Webhook fails**: Check network connectivity to the nemorosa server and verify the endpoint URL

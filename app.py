@@ -175,16 +175,16 @@ def handle_music_category(infohash):
     logger.info(f"Processing music download with infohash: {infohash}")
     
     try:
-        webhook_url = CONFIG['music']['fertilizer_endpoint']
+        webhook_url = f"{CONFIG['music']['nemorosa_endpoint']}/api/webhook?infohash={infohash}"
         data = {'infohash': infohash}
         
         response = requests.post(webhook_url, data=data, timeout=10)
         response.raise_for_status()
         
-        logger.info(f"Fertilizer Success: {response.status_code}")
+        logger.info(f"nemorosa Success: {response.status_code}")
         return True
     except requests.exceptions.RequestException as e:
-        logger.error(f"Fertilizer Failed: {e}")
+        logger.error(f"nemorosa Failed: {e}")
         return False
 
 @app.route('/webhook', methods=['POST'])
