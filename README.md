@@ -5,9 +5,8 @@ A REST API service that handles post-download actions for qBittorrent based on t
 ## Features
 
 - **Books Category**: 
-  - Emails ebook files (azw3, epub, mobi) to your Kindle
+  - Emails .epub to your Kindle
   - Creates hardlinks for audiobook files (m4b, mp3) to a specified directory
-  - Prioritizes azw3 > epub > mobi when multiple formats exist
 
 - **Music Category**:
   - Sends webhook to [Nemorosa](https://github.com/KyokoMiki/nemorosa) with torrent infohash
