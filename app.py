@@ -97,18 +97,18 @@ def find_audiobook_file(content_path):
     return audiobook_files
 
 def find_ebook_file(content_path):
-    """Find the best ebook file (priority: azw3, epub, mobi)"""
+    """Find epub file"""
     path = Path(content_path)
     
     # If it's a file, return it if it's a supported format
     if path.is_file():
-        if path.suffix.lower() in ['.azw3', '.epub', '.mobi']:
+        if path.suffix.lower() in ['.epub']:
             return str(path)
         return None
     
     # If it's a directory, search for files with priority
     if path.is_dir():
-        for ext in ['.azw3', '.epub', '.mobi']:
+        for ext in ['.epub']:
             for file in path.rglob(f'*{ext}'):
                 return str(file)
     
@@ -140,7 +140,7 @@ def handle_books_category(content_path):
     path = Path(content_path)
     
     # Check for ebook files
-    if path.is_file() and path.suffix.lower() in ['.azw3', '.epub', '.mobi']:
+    if path.is_file() and path.suffix.lower() in ['.epub']:
         ebook_file = str(path)
     elif path.is_dir():
         ebook_file = find_ebook_file(content_path)
